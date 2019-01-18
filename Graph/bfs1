@@ -1,0 +1,75 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<int>v[2000];
+vector<int>w[2000];
+int dis[2000];
+int vis[2000];
+int a,b;
+
+int bfs(int src,int n)
+{
+    queue<int>q;
+    for(int i=0; i<n; i++)
+    {
+        dis[i]=INT_MAX;
+        vis[i]=0;
+    }
+
+    q.push(src);
+    dis[src]=0;
+    while(!q.empty())
+    {
+        int k=q.front();
+        vis[k]=1;
+        q.pop();
+        for(int i=0; i<v[k].size(); i++)
+        {
+            int nxt=v[k][i];
+            if(dis[nxt]>w[k][i]+dis[k] && vis[nxt]==0)
+            {
+                dis[nxt]=w[k][i]+dis[k];
+                q.push(nxt);
+                if(vis[nxt]==0)
+                    vis[nxt]=1;
+            }
+        }
+    }
+}
+int main()
+{
+    int tests,cnt=0;
+    cin>>tests;
+    while(tests--)
+    {
+       for(int y=0;y<2000;y++)
+       {
+           v[y].clear();
+           w[y].clear();
+       }
+        for(int z=0;z<2000;z++)
+        {
+            vis[z]=0;
+            dis[z]=INT_MAX;
+        }
+        cnt++;
+        int n,m,k;
+        cin>>n>>m;
+        for(int i=1; i<=m; i++)
+        {
+            int a,b,cost;
+            cin>>a>>b>>cost;
+            a=a-1;
+            b=b-1;
+            v[a].push_back(b);
+            v[b].push_back(a);
+            w[a].push_back(cost);
+            w[b].push_back(cost);
+        }
+        bfs(0,n-1);
+        if(dis[n-1]!=INT_MAX)
+            printf("Case %d: %d\n",cnt,dis[n-1]);
+        else
+            printf("Case %d: Impossible\n",cnt);
+
+    }
+}
