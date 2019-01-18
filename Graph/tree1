@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<int>v[40000];
+vector<int>w[40000];
+int dis[40000];
+int vis[40000];
+queue<int>q;
+void beracera(int st, int &add)
+{
+    for(int i=0; i<40000; i++)
+    {
+        vis[i]=0;
+        dis[i]=0;
+    }
+    while(!q.empty()){
+    q.pop();
+    }
+    vis[st]=1;
+    dis[st]=0;
+    int boro=-10000,big=-1;
+    q.push(st);
+    while(!q.empty())
+    {
+        int temp=q.front();
+        q.pop();
+        for(int i=0; i<v[temp].size(); i++)
+        {
+            int x=v[temp][i];
+            int y=w[temp][i];
+            if(vis[x]==1)  continue;
+                vis[x]=1;
+                dis[x]=dis[temp]+y;
+                if(dis[x]>boro)
+                {
+                    boro=dis[x];
+                    add=x;
+                }
+                q.push(x);
+            }
+
+        }
+    }
+int main()
+{
+    int t,cnt=0,mx;
+    cin>>t;
+    for(int r=1;r<=t;r++)
+    {
+        cnt++;
+        int n;
+        cin>>n;
+        for(int i=0;i<n;i++)
+        {
+            v[i].clear();
+            w[i].clear();
+            dis[i]=0;
+            vis[i]=0;
+
+        }
+        for(int i=1; i<n; i++)
+        {
+            int a,b,c;
+            cin>>a>>b>>c;
+            mx=max(a,b);
+            v[a].push_back(b);
+            v[b].push_back(a);
+            w[a].push_back(c);
+            w[b].push_back(c);
+        }
+        int p,q;
+        beracera(0,p);
+          // cout<<p;
+        beracera(p,q);
+        printf("Case %d: %d\n", cnt, dis[q]);
+        //cout<<endl;
+    }
+    return 0;
+}
