@@ -1,0 +1,18 @@
+
+ #include <bits/stdc++.h>
+using namespace std;
+const int MXN = 100010;
+int n;
+double p,a[MXN],b[MXN],s,l=0,h=1e14;
+int main(){
+  cin>>n>>p;
+  for(int i=0;i<n;++i) cin>>a[i]>>b[i],s+=a[i];
+  if(p>=s) {cout<<-1<<endl; return 0;}
+    while (h - l > 1e-6){
+      double t=(l+h)/2;
+      s=0;
+      for(int j=0;j<n;++j)s+=max(0.0,a[j]-b[j]/t);
+      if(s>p)h=t;else l=t;
+    }
+    cout<<l<<endl; return 0;
+}
